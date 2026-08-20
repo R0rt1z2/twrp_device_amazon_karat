@@ -1,0 +1,16 @@
+dir.recovery = /system/bin
+dir.vendor = /vendor/bin
+
+[recovery]
+namespace.default.isolated = false
+namespace.default.search.paths = /system/${LIB}
+namespace.default.search.paths += /vendor/${LIB}
+namespace.default.search.paths += /vendor/${LIB}/hw
+namespace.default.asan.search.paths = /data/asan/system/${LIB}
+namespace.default.asan.search.paths += /system/${LIB}
+
+[vendor]
+namespace.default.isolated = false
+namespace.default.search.paths = /vendor/${LIB}
+namespace.default.search.paths += /vendor/${LIB}/hw
+namespace.default.search.paths += /system/${LIB}

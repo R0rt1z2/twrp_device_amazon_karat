@@ -1,0 +1,26 @@
+#!/system/bin/sh
+
+PATH=/system/bin:/system/xbin
+
+TARGET=/vendor/recovery-from-boot.p
+
+if [ ! -e /dev/block/mapper/vendor ]; then
+    echo "vendor is not mapped"
+    exit 1
+fi
+
+umount /vendor 2>/dev/null
+
+lptools unmap vendor || exit 1
+lptools map vendor || exit 1
+
+mount -o rw /dev/block/mapper/vendor /vendor || exit 1
+
+if [ -e ${TARGET} ]; then
+    mv ${TARGET} ${TARGET}.bak && echo "renamed ${TARGET} -> ${TARGET}.bak"
+else
+    echo "${TARGET} not present"
+fi
+
+sync
+umount /vendor

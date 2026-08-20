@@ -1,0 +1,25 @@
+service tee-supplicant /vendor/bin/tee-supplicant
+    class core
+    user root
+    group root system drmrpc
+    capabilities SYS_RAWIO
+    seclabel u:r:recovery:s0
+    disabled
+
+service vendor.keymaster-4-0-optee /vendor/bin/hw/android.hardware.keymaster@4.0-service.optee
+    class core
+    user root
+    group root system drmrpc
+    seclabel u:r:recovery:s0
+    disabled
+
+on boot
+    chmod 0666 /dev/tee0
+    chmod 0666 /dev/teepriv0
+    chmod 0660 /dev/block/mmcblk0rpmb
+    mkdir /data/vendor 0771 root root encryption=None
+    mkdir /data/vendor/tee 0770 root root
+    start tee-supplicant
+
+on property:init.svc.tee-supplicant=running
+    start vendor.keymaster-4-0-optee
